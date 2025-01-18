@@ -49,13 +49,13 @@ const run = async () => {
             artist: LanaDelRey._id,
             title: "Born to Die",
             year: 2012,
-            image: "fixtures/BornToDie.png"
+            image: "fixtures/BornToDie.jpg"
         },
         {
             artist: LanaDelRey._id,
             title: "Lust for Life",
             year: 2017,
-            image: "fixtures/LustForLife.png"
+            image: "fixtures/LustForLife.jpg"
         }
         )
 

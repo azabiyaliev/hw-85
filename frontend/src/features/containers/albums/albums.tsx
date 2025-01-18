@@ -1,22 +1,35 @@
 import {useAppDispatch, useAppSelector} from "../../../app/hooks.ts";
-import {artistsResponse, isLoading} from "./artistsSlice.ts";
 import {useEffect} from "react";
-import {fetchArtists} from "../store/thunks/thunks.ts";
-import {Card, CardActionArea, CardHeader, CardMedia, CircularProgress, Container, Typography} from "@mui/material";
-import Grid from '@mui/material/Grid2';
+import {fetchAlbums} from "../store/thunks/thunks.ts";
+import {albumsResponse, isLoading} from "./albumsSlice.ts";
+import {useParams} from "react-router-dom";
+import Grid from "@mui/material/Grid2";
+import {
+    Card,
+    CardContent,
+    CardHeader,
+    CardMedia,
+    CircularProgress,
+    Container,
+    Typography
+} from "@mui/material";
 import {apiUrl} from "../../../globalConstants.ts";
-import {NavLink} from "react-router-dom";
 
 
-const Artists = () => {
+const Albums = () => {
+
+    const params = useParams<{idArtist: string}>();
 
     const dispatch = useAppDispatch();
-    const artists = useAppSelector(artistsResponse);
+    const albums = useAppSelector(albumsResponse);
     const loading = useAppSelector(isLoading);
+    console.log(albums)
+    console.log(params)
 
     useEffect(() => {
-        dispatch(fetchArtists());
-    }, [dispatch])
+        if(params.idArtist)
+        dispatch(fetchAlbums(params.idArtist));
+    }, [dispatch, params.idArtist]);
 
     return (
         <Container maxWidth="lg">
@@ -25,25 +38,26 @@ const Artists = () => {
                     <CircularProgress />
                 ) : (
                     <>
-                        {artists.length === 0 && !loading ? (
+                        {albums.length === 0 && !loading ? (
                             <Typography variant="h6">
                                 No artists yet
                             </Typography>
                         ) :(
                             <>
-                                {artists.map((artist) => (
-                                    <Grid key={artist._id} size={6}>
+                                {albums.map((album) => (
+                                    <Grid key={album._id} size={6}>
                                         <Card sx={{ maxWidth: 345, mb: 2, mt: 10, boxShadow: 20 }}>
-                                            <CardActionArea to={`/albums/${artist._id}`} component={NavLink}>
-                                                <CardHeader title={artist.name}/>
+                                                <CardHeader title={album.title}/>
                                                 <CardMedia
                                                     style={{width: "100%"}}
                                                     height={400}
                                                     component="img"
-                                                    image={apiUrl + "/" + artist.photo}
-                                                    title={artist.name}
+                                                    image={apiUrl + "/" + album.image}
+                                                    title={album.title}
                                                 />
-                                            </CardActionArea>
+                                            <CardContent>
+                                                Released in year: {album.year}.
+                                            </CardContent>
 
                                         </Card>
                                     </Grid>
@@ -53,9 +67,8 @@ const Artists = () => {
                     </>
                 )}
             </Grid>
-
         </Container>
     );
 };
 
-export default Artists;
+export default Albums;

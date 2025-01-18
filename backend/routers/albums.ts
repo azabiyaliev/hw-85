@@ -35,7 +35,7 @@ albumsRouter.get('/:id', async (
         res.status(404).send("Not Found");
     }
     try {
-        const album = await Album.findById(id).populate("artist", '-_id information');
+        const album = await Album.findById(id).populate("artist", '-_id information').sort({year: -1});
         if (!album) res.status(404).send("Not Found");
         res.send(album);
     } catch (e) {
