@@ -18,6 +18,7 @@ artistsRouter.get('/', async (
     }
 });
 
+
 artistsRouter.post('/', imagesUpload.single('photo'), async (
     req,
     res,

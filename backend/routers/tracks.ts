@@ -12,7 +12,7 @@ tracksRouter.get('/', async (
     const idQuery = req.query.album as string;
     try {
         if(idQuery) {
-            const trackByIdAlbum: ITrackInfo[] = await Track.find({album: idQuery});
+            const trackByIdAlbum = await Track.find({album: idQuery}).populate("album", "artist title").sort({trackNumber: 1});
             if(!trackByIdAlbum) res.status(404).send("Not Found");
             res.send(trackByIdAlbum);
         } else {

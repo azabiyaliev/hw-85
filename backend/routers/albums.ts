@@ -14,7 +14,7 @@ albumsRouter.get('/', async (
     const idQuery = req.query.artist as string;
     try {
         if(idQuery) {
-            const albumByIdArtist = await Album.find({artist: idQuery}).sort({year: -1});
+            const albumByIdArtist = await Album.find({artist: idQuery}).populate("artist","name").sort({year: -1});
             if(!albumByIdArtist) res.status(404).send("Not Found");
             res.send(albumByIdArtist);
         } else {

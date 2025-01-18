@@ -2,10 +2,10 @@ import {useAppDispatch, useAppSelector} from "../../../app/hooks.ts";
 import {useEffect} from "react";
 import {fetchAlbums} from "../store/thunks/thunks.ts";
 import {albumsResponse, isLoading} from "./albumsSlice.ts";
-import {useParams} from "react-router-dom";
+import {NavLink, useParams} from "react-router-dom";
 import Grid from "@mui/material/Grid2";
 import {
-    Card,
+    Card, CardActionArea,
     CardContent,
     CardHeader,
     CardMedia,
@@ -23,8 +23,7 @@ const Albums = () => {
     const dispatch = useAppDispatch();
     const albums = useAppSelector(albumsResponse);
     const loading = useAppSelector(isLoading);
-    console.log(albums)
-    console.log(params)
+    const artistName = albums[0]?.artist?.name;
 
     useEffect(() => {
         if(params.idArtist)
@@ -33,6 +32,7 @@ const Albums = () => {
 
     return (
         <Container maxWidth="lg">
+
             <Grid container direction={"row"}>
                 {loading ? (
                     <CircularProgress />
@@ -40,13 +40,19 @@ const Albums = () => {
                     <>
                         {albums.length === 0 && !loading ? (
                             <Typography variant="h6">
-                                No artists yet
+                                No albums yet
                             </Typography>
-                        ) :(
+                        ) : (
                             <>
+                                <Grid size={12}>
+                                    <Typography sx={{mt: 4}} variant="h4">
+                                        {!artistName ? "Not found Artist" : artistName}
+                                    </Typography>
+                                </Grid>
                                 {albums.map((album) => (
                                     <Grid key={album._id} size={6}>
-                                        <Card sx={{ maxWidth: 345, mb: 2, mt: 10, boxShadow: 20 }}>
+                                        <CardActionArea to={`/tracks/${album._id}`} component={NavLink}>
+                                            <Card sx={{ maxWidth: 345, mb: 2, mt: 10, boxShadow: 20 }}>
                                                 <CardHeader title={album.title}/>
                                                 <CardMedia
                                                     style={{width: "100%"}}
@@ -55,11 +61,13 @@ const Albums = () => {
                                                     image={apiUrl + "/" + album.image}
                                                     title={album.title}
                                                 />
-                                            <CardContent>
-                                                Released in year: {album.year}.
-                                            </CardContent>
+                                                <CardContent>
+                                                    Released in year: {album.year}.
+                                                </CardContent>
 
-                                        </Card>
+                                            </Card>
+
+                                        </CardActionArea>
                                     </Grid>
                                 ))}
                             </>
