@@ -20,3 +20,40 @@ export interface ITrackRes {
     trackNumber: number;
     duration: number;
 }
+
+export interface IRegister {
+    username: string;
+    password: string;
+}
+
+export interface ILogin {
+    username: string;
+    password: string;
+}
+
+export interface IUser {
+    _id: string;
+    username: string;
+    token: string;
+}
+
+export interface IRegisterResponse {
+    user: User;
+    message: string;
+}
+
+export interface ValidationError {
+    errors: {
+        [key: string]:{
+            name: string;
+            message: string;
+        }
+    },
+    message: string;
+    name: string;
+    _message: string;
+}
+
+export interface GlobalError {
+    error: string;
+}
