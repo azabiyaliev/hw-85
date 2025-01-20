@@ -17,7 +17,7 @@ const TrackHistories = () => {
     console.log(trackHistories)
 
     if(!user) {
-        navigate("/");
+        navigate("/login");
     }
 
 
