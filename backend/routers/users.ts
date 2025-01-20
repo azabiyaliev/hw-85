@@ -4,7 +4,7 @@ import User from "../models/User";
 
 const userRouter = express.Router();
 
-userRouter.post('/', async (
+userRouter.post('/register', async (
     req,
     res,
     next) => {
@@ -22,7 +22,7 @@ userRouter.post('/', async (
         }
         user.generateToken();
         await user.save();
-        res.send(user);
+        res.send({user, message: "Register success"});
     } catch (error) {
 
         if (error instanceof Error.ValidationError) {

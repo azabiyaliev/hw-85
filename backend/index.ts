@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import mongoDb from "./mongoDb";
 import * as mongoose from "mongoose";
-
 import config from "./config";
 import artistsRouter from "./routers/artists";
 import albumsRouter from "./routers/albums";
