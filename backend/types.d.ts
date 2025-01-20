@@ -41,6 +41,12 @@ export interface ITrackInfo {
     trackNumber: number
 }
 
+export interface ITrackHistory {
+    user: string;
+    track: string;
+    datetime: Date;
+}
+
 export interface UserFields {
     username: string;
     password: string;

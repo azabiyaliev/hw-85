@@ -22,7 +22,6 @@ const RegisterPage = () => {
     password: "",
   });
 
-
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = e.target;
     setForm(prevState => ({...prevState, [name]: value}));

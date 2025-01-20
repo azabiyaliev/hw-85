@@ -1,10 +1,9 @@
-import {AppBar, Box, Button, Toolbar, Typography} from "@mui/material";
+import {AppBar, Box, Toolbar, Typography} from "@mui/material";
 import {NavLink} from "react-router-dom";
 import {useAppSelector} from "../../app/hooks.ts";
 import {selectUser} from "../../features/containers/users/usersSlice.ts";
 import AnonymousMenu from "./AnonymousMenu.tsx";
 import UserMenu from "./UserMenu.tsx";
-
 
 const NavBar = () => {
 
@@ -18,6 +17,7 @@ const NavBar = () => {
                         <Typography variant="h6" to="/" component={NavLink} sx={{flexGrow: 1, textDecoration: 'none', color:"inherit" }}>
                             MusicChannel
                         </Typography>
+                        {user ? <Typography sx={{textDecoration: "none", color: "inherit"}} to={"/trackHistory"} component={NavLink}>Track History</Typography> : null}
 
                         {user ? <UserMenu user={user}/> : <AnonymousMenu/>}
 

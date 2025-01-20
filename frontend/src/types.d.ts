@@ -57,3 +57,15 @@ export interface ValidationError {
 export interface GlobalError {
     error: string;
 }
+
+export interface ITrackHistory {
+    track: string;
+    datetime: Date;
+}
+
+export interface ITrackHistoryRes {
+    _id: string;
+    user: string;
+    track: ITrackRes;
+    datetime: string;
+}

@@ -1,20 +1,23 @@
 import {useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks.ts";
 import {useEffect} from "react";
-import {fetchAlbums, fetchTracks} from "../store/thunks/thunks.ts";
+import {fetchAlbums, fetchTracks, trackHistoryFetch} from "../store/thunks/thunks.ts";
 import {isLoading, tracksResponse} from "./tracksSlice.ts";
 import {albumsResponse} from "../albums/albumsSlice.ts";
 import {
+    Button,
     CircularProgress,
     Container,
     Typography
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
+import {selectUser} from "../users/usersSlice.ts";
 
 
 const Tracks = () => {
 
     const params = useParams<{idAlbum: string}>();
+    const user = useAppSelector(selectUser);
 
     const dispatch = useAppDispatch();
     const tracks = useAppSelector(tracksResponse);
@@ -30,6 +33,10 @@ const Tracks = () => {
         if(idArtist)
             dispatch(fetchAlbums(String(idArtist)));
     }, [dispatch, params.idAlbum, idArtist]);
+
+    const onPlay = async (trackHistory: {track: string, datetime: Date}) => {
+        await dispatch(trackHistoryFetch(trackHistory));
+    }
 
     return (
         <Container maxWidth="lg">
@@ -61,7 +68,7 @@ const Tracks = () => {
                                         <Typography>
                                             Duration: {track.duration}
                                         </Typography>
-
+                                        {user ? <Button onClick={() => onPlay({track: track._id, datetime: new Date()}) }>Play</Button> : null}
                                     </Grid>
                                 ))}
                             </>

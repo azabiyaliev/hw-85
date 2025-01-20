@@ -6,7 +6,7 @@ import {
     IRegister,
     IRegisterResponse,
     ValidationError,
-    ILogin, IUser, GlobalError
+    ILogin, IUser, GlobalError, ITrackHistory, ITrackHistoryRes
 } from "../../../../types";
 import axiosAPI from "../../../../axiosAPI.ts";
 import {isAxiosError} from "axios";
@@ -54,7 +54,6 @@ export const register = createAsyncThunk<
     }
 )
 
-
 export const login = createAsyncThunk<IUser, ILogin, {rejectValue: GlobalError}>(
     'users/login',
     async (login, {rejectWithValue}) => {
@@ -79,3 +78,20 @@ export const logout = createAsyncThunk<void, void, {state: RootState}>(
       await axiosAPI.delete("/users/sessions", {headers: {'Authorization': token}});
     }
 )
+
+export const trackHistoryFetch = createAsyncThunk<void, ITrackHistory, {state: RootState}>(
+    'trackHistory/trackHistoryFetch',
+    async (trackHistory: ITrackHistory, {getState}) => {
+        const token = getState().users.user?.token;
+        await axiosAPI.post("/trackHistories", trackHistory, {headers: {'Authorization': token}});
+
+    }
+)
+
+export const trackHistoryGet = createAsyncThunk<ITrackHistoryRes[], void, {state: RootState}>(
+    "tracksHistory/trackHistoryGet",
+    async (_, {getState})=> {
+        const token = getState().users.user?.token;
+        const response = await axiosAPI.get<ITrackHistoryRes[]>("/trackHistories",{headers: {'Authorization': token}});
+        return response.data || [];
+    });
