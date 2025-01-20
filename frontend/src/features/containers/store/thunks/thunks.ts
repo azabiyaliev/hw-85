@@ -10,6 +10,7 @@ import {
 } from "../../../../types";
 import axiosAPI from "../../../../axiosAPI.ts";
 import {isAxiosError} from "axios";
+import {RootState} from "../../../../app/store.ts";
 
 
 export const fetchArtists = createAsyncThunk<IArtistRes[], void>(
@@ -68,5 +69,13 @@ export const login = createAsyncThunk<IUser, ILogin, {rejectValue: GlobalError}>
 
             throw error;
         }
+    }
+)
+
+export const logout = createAsyncThunk<void, void, {state: RootState}>(
+    'users/logout',
+    async (_, {getState}) => {
+      const token = getState().users.user?.token;
+      await axiosAPI.delete("/users/sessions", {headers: {'Authorization': token}});
     }
 )
