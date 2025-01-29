@@ -96,4 +96,38 @@ tracksRouter.delete('/:id', auth, permit("admin", "user"), async (
     }
 })
 
+tracksRouter.patch('/:id/togglePublished', auth, permit("admin"), async (
+    req,
+    res,
+    next) => {
+    const id = req.params.id;
+
+    try {
+        const track = await Track.findOne(
+            {_id: id});
+        if (!track) {
+            res.status(403).send({error: "Track not found or access denied"});
+        }
+
+        if(req.body.user) delete req.body.user;
+
+        const updateTrack = await Track.findOneAndUpdate(
+            {_id: id},
+            [{$set: {isPublished: {$not: "$isPublished"}}}],
+            {new: true, runValidators: true}
+        )
+        if (updateTrack) {
+            res.send({message: "Successfully updated", isPublished: updateTrack.isPublished});
+        }
+
+    } catch (error) {
+        if (error instanceof Error.ValidationError) {
+            res.status(400).send(error);
+            return;
+        }
+        next(error);
+    }
+})
+
+
 export default tracksRouter;

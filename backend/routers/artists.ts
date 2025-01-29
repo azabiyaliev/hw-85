@@ -83,5 +83,38 @@ artistsRouter.delete('/:id', auth, permit("admin", "user"), async (
     }
 })
 
+artistsRouter.patch('/:id/togglePublished', auth, permit("admin"), async (
+    req,
+    res,
+    next) => {
+    const id = req.params.id;
+
+    try {
+        const artist = await Artist.findOne(
+            {_id: id});
+        if (!artist) {
+            res.status(403).send({error: "Artist not found or access denied"});
+        }
+
+        if(req.body.user) delete req.body.user;
+
+        const updateArtist = await Artist.findOneAndUpdate(
+            {_id: id},
+            [{$set: {isPublished: {$not: "$isPublished"}}}],
+            {new: true, runValidators: true}
+        )
+        if (updateArtist) {
+            res.send({message: "Successfully updated", isPublished: updateArtist.isPublished});
+        }
+
+    } catch (error) {
+        if (error instanceof Error.ValidationError) {
+            res.status(400).send(error);
+            return;
+        }
+        next(error);
+    }
+})
+
 
 export default artistsRouter;

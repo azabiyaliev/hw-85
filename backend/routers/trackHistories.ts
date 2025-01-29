@@ -2,7 +2,6 @@ import express from 'express';
 import User from "../models/User";
 import TrackHistory from "../models/TrackHistory";
 import {Error} from "mongoose";
-import {ITrackHistory} from "../types";
 import Track from "../models/Track";
 import auth, {RequestWithUser} from "../middleware/auth";
 
@@ -30,7 +29,7 @@ trackHistoriesRouter.post('/', async (
         if (!track) res.status(404).send('Not Found track');
     }
 
-    const trackHistoryData: ITrackHistory = {
+    const trackHistoryData = {
         user: user._id.toString(),
         track: req.body.track,
         datetime: req.body.datetime

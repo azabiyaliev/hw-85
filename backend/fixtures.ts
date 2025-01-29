@@ -36,12 +36,13 @@ const run = async () => {
     );
 
 
-    const [TheWeeknd, LanaDelRey] = await Artist.create(
+    const [TheWeeknd, LanaDelRey, ToryLanez] = await Artist.create(
         {
             user: Martin._id,
             name: "The Weeknd",
             photo: "fixtures/TheWeeknd.jpg",
-            information: "The Weeknd real name is Abel Tesfaye"
+            information: "The Weeknd real name is Abel Tesfaye",
+            isPublished: true
         },
         {
             user: Lazlo._id,
@@ -50,36 +51,55 @@ const run = async () => {
             information: "Lana Del Rey real name is Elizabeth Grant",
             isPublished: true
         },
+        {
+            user: Lazlo._id,
+            name: "Tory Lanez",
+            photo: "fixtures/ToryLanez.jpg",
+            information: "Tory Lanez real name is Daystar Shemuel Shua Peterson",
+            isPublished: false
+        },
     )
 
-    const [Starboy, AfterHours, BornToDie, LustForLife] = await Album.create(
+    const [Starboy, AfterHours, BornToDie, LustForLife, AloneAtProm] = await Album.create(
         {
             user: Martin._id,
             artist: TheWeeknd._id,
             title: "Starboy",
             year: 2016,
             image: "fixtures/Starboy.png",
+            isPublished: true,
         },
         {
             user: Lazlo._id,
             artist: TheWeeknd._id,
             title: "After Hours",
             year: 2020,
-            image: "fixtures/AfterHours.png"
+            image: "fixtures/AfterHours.png",
+            isPublished: true,
         },
         {
             user: Martin._id,
             artist: LanaDelRey._id,
             title: "Born to Die",
             year: 2012,
-            image: "fixtures/BornToDie.jpg"
+            image: "fixtures/BornToDie.jpg",
+            isPublished: true,
         },
         {
             user: Lazlo._id,
             artist: LanaDelRey._id,
             title: "Lust for Life",
             year: 2017,
-            image: "fixtures/LustForLife.jpg"
+            image: "fixtures/LustForLife.jpg",
+            isPublished: true,
+        },
+        {
+            user: Lazlo._id,
+            artist: ToryLanez._id,
+            title: "Alone at Prom",
+            year: 2021,
+            image: "fixtures/AloneAtProm.jpeg",
+            isPublished: false,
         }
         )
 
@@ -90,6 +110,7 @@ const run = async () => {
             title: "Starboy",
             duration: "3:50",
             trackNumber: 1,
+            isPublished: true
         },
         {
             user: Martin._id,
@@ -97,6 +118,7 @@ const run = async () => {
             title: "Party Monster",
             duration: "4:09",
             trackNumber: 2,
+            isPublished: true
         },
         {
             user: Martin._id,
@@ -104,6 +126,7 @@ const run = async () => {
             title: "False Alarm",
             duration: "3:40",
             trackNumber: 3,
+            isPublished: true
         },
         {
             user: Martin._id,
@@ -111,6 +134,7 @@ const run = async () => {
             title: "Reminder",
             duration: "3:38",
             trackNumber: 4,
+            isPublished: true
         },
         {
             user: Martin._id,
@@ -118,6 +142,7 @@ const run = async () => {
             title: "Rockin`",
             duration: "3:52",
             trackNumber: 5,
+            isPublished: true
         },
         {
             user: Martin._id,
@@ -125,6 +150,7 @@ const run = async () => {
             title: "Alone Again",
             duration: "4:10",
             trackNumber: 1,
+            isPublished: true
         },
         {
             user: Martin._id,
@@ -132,6 +158,7 @@ const run = async () => {
             title: "Too Late",
             duration: "3:59",
             trackNumber: 2,
+            isPublished: true
         },
         {
             user: Martin._id,
@@ -139,6 +166,7 @@ const run = async () => {
             title: "Hardest to Love",
             duration: "3:31",
             trackNumber: 3,
+            isPublished: true
         },
         {
             user: Martin._id,
@@ -146,6 +174,7 @@ const run = async () => {
             title: "Scared to Live",
             duration: "3:11",
             trackNumber: 4,
+            isPublished: true
         },
         {
             user: Martin._id,
@@ -153,6 +182,7 @@ const run = async () => {
             title: "Snowchild",
             duration: "4:07",
             trackNumber: 5,
+            isPublished: true
         },
         {
             user: Lazlo._id,
@@ -160,6 +190,7 @@ const run = async () => {
             title: "Born To Die",
             duration: "4:46",
             trackNumber: 1,
+            isPublished: true
         },
         {
             user: Lazlo._id,
@@ -167,6 +198,7 @@ const run = async () => {
             title: "Off to the Races",
             duration: "5:00",
             trackNumber: 2,
+            isPublished: true
         },
         {
             user: Lazlo._id,
@@ -174,6 +206,7 @@ const run = async () => {
             title: "Blue Jeans",
             duration: "3:30",
             trackNumber: 3,
+            isPublished: true
         },
         {
             user: Lazlo._id,
@@ -181,6 +214,7 @@ const run = async () => {
             title: "Video Games",
             duration: "4:42",
             trackNumber: 4,
+            isPublished: true
         },
         {
             user: Lazlo._id,
@@ -188,6 +222,7 @@ const run = async () => {
             title: "Diet Mountain Dew",
             duration: "3:43",
             trackNumber: 5,
+            isPublished: true
         },
         {
             user: Lazlo._id,
@@ -195,6 +230,7 @@ const run = async () => {
             title: "Love",
             duration: "4:32",
             trackNumber: 1,
+            isPublished: true
         },
         {
             user: Lazlo._id,
@@ -202,6 +238,7 @@ const run = async () => {
             title: "Lust for Life",
             duration: "4:24",
             trackNumber: 2,
+            isPublished: true
         },
         {
             user: Lazlo._id,
@@ -209,6 +246,7 @@ const run = async () => {
             title: "13 Beaches",
             duration: "4:55",
             trackNumber: 3,
+            isPublished: true
         },
         {
             user: Lazlo._id,
@@ -216,6 +254,7 @@ const run = async () => {
             title: "Cherry",
             duration: "3:00",
             trackNumber: 4,
+            isPublished: true
         },
         {
             user: Lazlo._id,
@@ -223,6 +262,31 @@ const run = async () => {
             title: "White Mustang",
             duration: "2:44",
             trackNumber: 5,
+            isPublished: true
+        },
+        {
+            user: Lazlo._id,
+            album: AloneAtProm._id,
+            title: "The Color Violet",
+            duration: "3:47",
+            trackNumber: 1,
+            isPublished: false
+        },
+        {
+            user: Lazlo._id,
+            album: AloneAtProm._id,
+            title: "Pluto's Last Comet",
+            duration: "3:32",
+            trackNumber: 2,
+            isPublished: false
+        },
+        {
+            user: Lazlo._id,
+            album: AloneAtProm._id,
+            title: "Ballad of a Badman",
+            duration: "4:15",
+            trackNumber: 3,
+            isPublished: false
         },
     )
 

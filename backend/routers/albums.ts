@@ -115,4 +115,39 @@ albumsRouter.delete('/:id', auth, permit("admin", "user"), async (
     }
 })
 
+albumsRouter.patch('/:id/togglePublished', auth, permit("admin"), async (
+    req,
+    res,
+    next) => {
+    const id = req.params.id;
+
+    try {
+        const album = await Album.findOne(
+            {_id: id });
+        if (!album) {
+            res.status(403).send({error: "Album not found or access denied"});
+            return
+        }
+
+        if(req.body.user) delete req.body.user;
+
+        const updateAlbum = await Album.findOneAndUpdate(
+            {_id: id},
+            [{$set: {isPublished: {$not: "$isPublished"}}}],
+            {new: true, runValidators: true}
+        )
+        if (updateAlbum) {
+            res.send({message: "Successfully updated", isPublished: updateAlbum.isPublished});
+        }
+
+    } catch (error) {
+        if (error instanceof Error.ValidationError) {
+            res.status(400).send(error);
+            return;
+        }
+        next(error);
+    }
+})
+
+
 export default albumsRouter;
