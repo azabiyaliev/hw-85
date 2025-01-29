@@ -1,7 +1,9 @@
 import express from "express";
 import Track from "../models/Track";
 import Album from "../models/Album";
-import {ITrack, ITrackInfo} from "../types";
+import auth, {RequestWithUser} from "../middleware/auth";
+import permit from "../middleware/permit";
+import {Error} from "mongoose";
 
 const tracksRouter = express.Router();
 
@@ -16,7 +18,7 @@ tracksRouter.get('/', async (
             if(!trackByIdAlbum) res.status(404).send("Not Found");
             res.send(trackByIdAlbum);
         } else {
-            const tracks: ITrackInfo[] = await Track.find();
+            const tracks = await Track.find();
             res.send(tracks);
         }
     } catch (e) {
@@ -24,26 +26,73 @@ tracksRouter.get('/', async (
     }
 });
 
-tracksRouter.post('/', async (
+tracksRouter.post('/', auth, permit("admin", "user"), async (
     req,
     res,
     next) => {
+
+    let reqWithUser = req as RequestWithUser;
+    const userFromAuth = reqWithUser.user._id;
+
     if (req.body.album) {
         const album = await Album.findById(req.body.album);
         if (!album) res.status(404).send('Not Found album');
     }
-    const trackData: ITrack = {
+    const trackData = {
+        user: userFromAuth,
         album: req.body.album,
         title: req.body.title,
         duration: req.body.duration,
-        trackNumber: req.body.trackNumber
+        trackNumber: req.body.trackNumber,
+        isPublished: false
     }
     try {
         const track = new Track(trackData);
         await track.save();
         res.send(track);
-    } catch (e) {
-        next(e);
+    } catch (error) {
+        if (error instanceof Error.ValidationError) {
+            res.status(400).send(error);
+            return;
+        }
+        next(error);
+    }
+})
+
+tracksRouter.delete('/:id', auth, permit("admin", "user"), async (
+    req,
+    res,
+    next) => {
+    const id = req.params.id;
+    let reqWithUser = req as RequestWithUser;
+    const userFromAuth = reqWithUser.user._id;
+    if(!id) {
+        res.status(400).send({error: "Missing ID"});
+        return;
+    }
+    try {
+        if(reqWithUser.user.role === "admin") {
+            const trackDeleteByAdmin = await Track.findByIdAndDelete(id)
+            res.send(trackDeleteByAdmin);
+        } else {
+            const trackDelete = await Track.findOneAndDelete({
+                _id: id,
+                user: userFromAuth,
+                isPublished: false,
+            });
+            if (!trackDelete) {
+                res.status(403).send({message: "Track not found or access denied"});
+                return;
+            }
+            res.send({message: "Successfully deleted", track: trackDelete});
+        }
+
+    } catch (error) {
+        if (error instanceof Error.ValidationError) {
+            res.status(400).send(error);
+            return;
+        }
+        next(error);
     }
 })
 

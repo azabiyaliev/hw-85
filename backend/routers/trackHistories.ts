@@ -58,7 +58,6 @@ trackHistoriesRouter.get('/', auth, async (
     const userFromAuth = reqWithAuth.user;
     try {
         const trackHistory = await TrackHistory.find({user: userFromAuth._id}).populate("track", "artist title");
-        console.log(trackHistory);
         if (trackHistory) {
             res.send(trackHistory);
         }

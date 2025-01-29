@@ -3,6 +3,11 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const AlbumSchema = new mongoose.Schema({
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: [true, "User is required"]
+    },
     artist: {
         type: Schema.Types.ObjectId,
         ref: "Artist",
@@ -19,6 +24,10 @@ const AlbumSchema = new mongoose.Schema({
     image: {
         type: String,
         default: null,
+    },
+    isPublished: {
+        type: Boolean,
+        default: false,
     }
 });
 

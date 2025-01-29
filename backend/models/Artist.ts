@@ -1,6 +1,14 @@
 import mongoose from "mongoose";
 
+const Schema = mongoose.Schema;
+
+
 const ArtistSchema = new mongoose.Schema({
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: [true, "User is required"]
+    },
     name: {
         type: String,
         required: true,
@@ -13,6 +21,10 @@ const ArtistSchema = new mongoose.Schema({
     information: {
         type: String,
         default: null,
+    },
+    isPublished: {
+        type: Boolean,
+        default: false,
     }
 });
 
