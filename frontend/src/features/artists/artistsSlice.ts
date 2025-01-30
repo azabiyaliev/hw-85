@@ -2,7 +2,7 @@ import {IArtist, IArtistRes} from "../../types";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {fetchArtists} from "../store/thunks/thunks.ts";
 import {RootState} from "../../app/store.ts";
-import {deleteArtistById, postArtist} from "./artistsThunk.ts";
+import {deleteArtistById, postArtist, togglePublished} from "./artistsThunk.ts";
 
 interface artistsState {
     artistsRes: IArtistRes[],
@@ -10,6 +10,7 @@ interface artistsState {
     isLoading: boolean,
     isLoadingPost: boolean,
     isLoadingDelete: boolean,
+    isLoadingPublished: boolean,
 }
 
 const initialState: artistsState = {
@@ -18,6 +19,7 @@ const initialState: artistsState = {
     isLoading: false,
     isLoadingPost: false,
     isLoadingDelete: false,
+    isLoadingPublished: false,
 }
 
 export const artistsResponse = (state: RootState) => state.artists.artistsRes;
@@ -58,6 +60,15 @@ export const artistsSlice = createSlice({
             })
             .addCase(deleteArtistById.rejected, (state) => {
                 state.isLoadingDelete = false;
+            })
+            .addCase(togglePublished.pending, (state) => {
+                state.isLoadingPublished = true;
+            })
+            .addCase(togglePublished.fulfilled, (state) => {
+                state.isLoadingPublished = false;
+            })
+            .addCase(togglePublished.rejected, (state) => {
+                state.isLoadingPublished = false;
             })
 
     }

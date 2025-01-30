@@ -5,6 +5,7 @@ import {albumsResponse, isLoading} from "../albumsSlice.ts";
 import {NavLink, useNavigate, useParams} from "react-router-dom";
 import Grid from "@mui/material/Grid2";
 import {
+    Box, Button,
     Card, CardActionArea, CardActions,
     CardContent,
     CardHeader,
@@ -16,8 +17,7 @@ import {
 import {apiUrl} from "../../../globalConstants.ts";
 import {selectUser} from "../../users/usersSlice.ts";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {deleteAlbumById} from "../albumsThunk.ts";
-
+import {deleteAlbumById, togglePublishedAlbum} from "../albumsThunk.ts";
 
 const Albums = () => {
 
@@ -37,6 +37,11 @@ const Albums = () => {
 
     const deleteAlbum = async (id: string) => {
         await dispatch(deleteAlbumById(id))
+        navigate(`/artists`)
+    }
+
+    const publishedAlbum = async (id: string) => {
+        await dispatch(togglePublishedAlbum(id));
         navigate(`/artists`)
     }
 
@@ -79,7 +84,12 @@ const Albums = () => {
                                                     Released in year: {album.year}.
                                                 </CardContent>
                                                 {(user && user.role === "admin") ?
-                                                    (album.isPublished === true ? <CardContent>Is published</CardContent> : <CardContent>Not published</CardContent>)
+                                                    (!album.isPublished ? (
+                                                        <Box sx={{display: "flex", justifyContent: "space-between"}}>
+                                                            <CardContent>Not published</CardContent>
+                                                            <Button onClick={() => publishedAlbum(album._id)}>Published</Button>
+                                                        </Box>
+                                                    ): null)
                                                     : null}
                                                 {(user && (user.role === "admin" || (user._id === album.user && !album.isPublished))) ? (
                                                     <>

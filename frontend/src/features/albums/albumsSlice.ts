@@ -2,7 +2,7 @@ import {IAlbum, IAlbumRes} from "../../types";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {RootState} from "../../app/store.ts";
 import {fetchAlbums} from "../store/thunks/thunks.ts";
-import {deleteAlbumById, postAlbum} from "./albumsThunk.ts";
+import {deleteAlbumById, postAlbum, togglePublishedAlbum} from "./albumsThunk.ts";
 
 interface albumsState {
     albumsRes: IAlbumRes[];
@@ -10,6 +10,7 @@ interface albumsState {
     isLoading: boolean;
     isLoadingPost: boolean
     isLoadingDelete: boolean;
+    isLoadingPublished: boolean;
 }
 
 const initialState: albumsState = {
@@ -18,6 +19,7 @@ const initialState: albumsState = {
     isLoading: false,
     isLoadingPost: false,
     isLoadingDelete: false,
+    isLoadingPublished: false,
 }
 
 export const albumsResponse = (state: RootState) => state.albums.albumsRes;
@@ -58,6 +60,15 @@ export const albumsSlice = createSlice({
             })
             .addCase(deleteAlbumById.rejected, (state) => {
                 state.isLoadingDelete = false
+            })
+            .addCase(togglePublishedAlbum.pending, (state) => {
+                state.isLoadingPublished = true
+            })
+            .addCase(togglePublishedAlbum.fulfilled, (state) => {
+                state.isLoadingPublished = false
+            })
+            .addCase(togglePublishedAlbum.rejected, (state) => {
+                state.isLoadingPublished = false
             })
 
     }

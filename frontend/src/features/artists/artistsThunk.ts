@@ -34,3 +34,11 @@ export const deleteArtistById = createAsyncThunk<void, string,  {state: RootStat
         await axiosAPI.delete(`/artists/${id}`, {headers: {'Authorization': token}});
     }
 )
+
+export const togglePublished = createAsyncThunk<void, string,  {state: RootState }>(
+    "artists/togglePublished",
+    async (id, {getState}) => {
+        const token = getState().users.user?.token;
+        await axiosAPI.patch(`/artists/${id}/togglePublished`, {headers: {'Authorization': token}});
+    }
+)

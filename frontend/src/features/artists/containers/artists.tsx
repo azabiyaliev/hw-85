@@ -3,6 +3,8 @@ import {artistsResponse, isLoading} from "../artistsSlice.ts";
 import {useEffect} from "react";
 import {fetchArtists} from "../../store/thunks/thunks.ts";
 import {
+    Box,
+    Button,
     Card,
     CardActionArea, CardActions,
     CardContent,
@@ -17,7 +19,7 @@ import Grid from '@mui/material/Grid2';
 import {apiUrl} from "../../../globalConstants.ts";
 import {NavLink, useNavigate} from "react-router-dom";
 import {selectUser} from "../../users/usersSlice.ts";
-import {deleteArtistById} from "../artistsThunk.ts";
+import {deleteArtistById, togglePublished} from "../artistsThunk.ts";
 
 const Artists = () => {
 
@@ -37,6 +39,12 @@ const Artists = () => {
         await dispatch(deleteArtistById(id))
         navigate(`/artists`)
     }
+
+    const published = async (id: string) => {
+        await dispatch(togglePublished(id));
+        navigate(`/artists`)
+    }
+
     return (
         <Container maxWidth="lg">
             <Grid container direction={"row"}>
@@ -67,7 +75,12 @@ const Artists = () => {
                                                         title={artist.name}
                                                 />
                                                     {(user && user.role === "admin") ?
-                                                    (artist.isPublished === true ? <CardContent>Is published</CardContent> : <CardContent>Not published</CardContent>)
+                                                    (!artist.isPublished ? (
+                                                        <Box sx={{display: "flex", justifyContent: "space-between"}}>
+                                                            <CardContent>Not published</CardContent>
+                                                            <Button onClick={() => published(artist._id)}>Published</Button>
+                                                        </Box>
+                                                    ): null)
                                                     : null}
                                                     {(user && (user.role === "admin" || (user._id === artist.user && !artist.isPublished))) ? (
                                                         <>

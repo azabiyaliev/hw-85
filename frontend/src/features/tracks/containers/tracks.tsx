@@ -5,14 +5,15 @@ import {fetchAlbums, fetchTracks, trackHistoryFetch} from "../../store/thunks/th
 import {isLoading, tracksResponse} from "../tracksSlice.ts";
 import {albumsResponse} from "../../albums/albumsSlice.ts";
 import {
-    Button, CardActions,
+    Box,
+    Button, CardActions, CardContent,
     CircularProgress,
     Container, IconButton,
     Typography
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import {selectUser} from "../../users/usersSlice.ts";
-import {deleteTrackById} from "../tracksThunk.ts";
+import {deleteTrackById, togglePublishedTrack} from "../tracksThunk.ts";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 
@@ -43,6 +44,11 @@ const Tracks = () => {
 
     const deleteTrack = async (id: string) => {
         await dispatch(deleteTrackById(id))
+        navigate(`/artists`)
+    }
+
+    const publishedTrack = async (id: string) => {
+        await dispatch(togglePublishedTrack(id));
         navigate(`/artists`)
     }
 
@@ -81,7 +87,12 @@ const Tracks = () => {
                                             Duration: {track.duration}
                                         </Typography>
                                         {(user && user.role === "admin") ?
-                                            (track.isPublished === true ? <Typography>Is published</Typography> : <Typography>Not published</Typography>)
+                                            (!track.isPublished ? (
+                                                <Box sx={{display: "flex", justifyContent: "space-between"}}>
+                                                    <CardContent>Not published</CardContent>
+                                                    <Button onClick={() => publishedTrack(track._id)}>Published</Button>
+                                                </Box>
+                                            ): null)
                                             : null}
                                         {(user && (user.role === "admin" || (user._id === track.user && !track.isPublished))) ? (
                                             <>

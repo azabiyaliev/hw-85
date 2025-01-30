@@ -23,3 +23,11 @@ export const deleteTrackById = createAsyncThunk<void, string,  {state: RootState
         await axiosAPI.delete(`/tracks/${id}`, {headers: {'Authorization': token}});
     }
 )
+
+export const togglePublishedTrack = createAsyncThunk<void, string,  {state: RootState }>(
+    "albums/togglePublishedTrack",
+    async (id, {getState}) => {
+        const token = getState().users.user?.token;
+        await axiosAPI.patch(`/tracks/${id}/togglePublished`, {headers: {'Authorization': token}});
+    }
+)
