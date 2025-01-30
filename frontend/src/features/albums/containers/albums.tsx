@@ -2,19 +2,21 @@ import {useAppDispatch, useAppSelector} from "../../../app/hooks.ts";
 import {useEffect} from "react";
 import {fetchAlbums} from "../../store/thunks/thunks.ts";
 import {albumsResponse, isLoading} from "../albumsSlice.ts";
-import {NavLink, useParams} from "react-router-dom";
+import {NavLink, useNavigate, useParams} from "react-router-dom";
 import Grid from "@mui/material/Grid2";
 import {
-    Card, CardActionArea,
+    Card, CardActionArea, CardActions,
     CardContent,
     CardHeader,
     CardMedia,
     CircularProgress,
-    Container,
+    Container, IconButton,
     Typography
 } from "@mui/material";
 import {apiUrl} from "../../../globalConstants.ts";
 import {selectUser} from "../../users/usersSlice.ts";
+import DeleteIcon from "@mui/icons-material/Delete";
+import {deleteAlbumById} from "../albumsThunk.ts";
 
 
 const Albums = () => {
@@ -26,11 +28,17 @@ const Albums = () => {
     const albums = useAppSelector(albumsResponse);
     const loading = useAppSelector(isLoading);
     const artistName = albums[0]?.artist?.name;
+    const navigate = useNavigate();
 
     useEffect(() => {
         if(params.idArtist)
         dispatch(fetchAlbums(params.idArtist));
     }, [dispatch, params.idArtist]);
+
+    const deleteAlbum = async (id: string) => {
+        await dispatch(deleteAlbumById(id))
+        navigate(`/artists`)
+    }
 
     return (
         <Container maxWidth="lg">
@@ -73,6 +81,15 @@ const Albums = () => {
                                                 {(user && user.role === "admin") ?
                                                     (album.isPublished === true ? <CardContent>Is published</CardContent> : <CardContent>Not published</CardContent>)
                                                     : null}
+                                                {(user && (user.role === "admin" || (user._id === album.user && !album.isPublished))) ? (
+                                                    <>
+                                                        <CardActions>
+                                                            <IconButton onClick={() => deleteAlbum(album._id)}>
+                                                                <DeleteIcon />
+                                                            </IconButton>
+                                                        </CardActions>
+                                                    </>
+                                                ) : null}
                                                 {(user && user._id === album.user && !album.isPublished) ?
                                                     (<CardContent>Not published</CardContent>)
                                                     : null}

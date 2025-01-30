@@ -2,18 +2,20 @@ import {ITrackRes} from "../../types";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {fetchTracks} from "../store/thunks/thunks.ts";
 import {RootState} from "../../app/store.ts";
-import {postTrack} from "./tracksThunk.ts";
+import {deleteTrackById, postTrack} from "./tracksThunk.ts";
 
 interface tracksState {
     tracksRes: ITrackRes[];
     isLoading: boolean;
     isLoadingPost: boolean;
+    isLoadingDelete: boolean;
 }
 
 const initialState: tracksState = {
     tracksRes: [],
     isLoading: false,
     isLoadingPost: false,
+    isLoadingDelete: false,
 }
 
 
@@ -46,6 +48,15 @@ export const tracksSlice = createSlice({
             })
             .addCase(postTrack.rejected, (state) => {
                 state.isLoadingPost = false
+            })
+            .addCase(deleteTrackById.pending, (state) => {
+                state.isLoadingDelete = true
+            })
+            .addCase(deleteTrackById.fulfilled, (state) => {
+                state.isLoadingDelete = false
+            })
+            .addCase(deleteTrackById.rejected, (state) => {
+                state.isLoadingDelete = false
             })
 
     }

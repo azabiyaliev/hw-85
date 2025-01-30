@@ -26,3 +26,11 @@ export const postArtist = createAsyncThunk<void, IArtist, { state: RootState }>(
         });
     },
 );
+
+export const deleteArtistById = createAsyncThunk<void, string,  {state: RootState }>(
+    "artists/deleteArtistById",
+    async (id, {getState}) => {
+        const token = getState().users.user?.token;
+        await axiosAPI.delete(`/artists/${id}`, {headers: {'Authorization': token}});
+    }
+)

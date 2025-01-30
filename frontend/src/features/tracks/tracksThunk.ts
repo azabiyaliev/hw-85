@@ -15,3 +15,11 @@ export const postTrack = createAsyncThunk<void, ITrack, { state: RootState }>(
         console.log(token);
     },
 );
+
+export const deleteTrackById = createAsyncThunk<void, string,  {state: RootState }>(
+    "tracks/deleteTrackById",
+    async (id, {getState}) => {
+        const token = getState().users.user?.token;
+        await axiosAPI.delete(`/tracks/${id}`, {headers: {'Authorization': token}});
+    }
+)

@@ -2,13 +2,14 @@ import {IArtist, IArtistRes} from "../../types";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {fetchArtists} from "../store/thunks/thunks.ts";
 import {RootState} from "../../app/store.ts";
-import {postArtist} from "./artistsThunk.ts";
+import {deleteArtistById, postArtist} from "./artistsThunk.ts";
 
 interface artistsState {
     artistsRes: IArtistRes[],
     artistPost: IArtist | null,
     isLoading: boolean,
-    isLoadingPost: boolean
+    isLoadingPost: boolean,
+    isLoadingDelete: boolean,
 }
 
 const initialState: artistsState = {
@@ -16,6 +17,7 @@ const initialState: artistsState = {
     artistPost: null,
     isLoading: false,
     isLoadingPost: false,
+    isLoadingDelete: false,
 }
 
 export const artistsResponse = (state: RootState) => state.artists.artistsRes;
@@ -47,6 +49,15 @@ export const artistsSlice = createSlice({
             })
             .addCase(postArtist.rejected, (state) => {
                 state.isLoadingPost = false
+            })
+            .addCase(deleteArtistById.pending, (state) => {
+                state.isLoadingDelete = true;
+            })
+            .addCase(deleteArtistById.fulfilled, (state) => {
+                state.isLoadingDelete = false;
+            })
+            .addCase(deleteArtistById.rejected, (state) => {
+                state.isLoadingDelete = false;
             })
 
     }

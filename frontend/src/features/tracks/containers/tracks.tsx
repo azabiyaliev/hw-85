@@ -1,17 +1,19 @@
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks.ts";
 import {useEffect} from "react";
 import {fetchAlbums, fetchTracks, trackHistoryFetch} from "../../store/thunks/thunks.ts";
 import {isLoading, tracksResponse} from "../tracksSlice.ts";
 import {albumsResponse} from "../../albums/albumsSlice.ts";
 import {
-    Button,
+    Button, CardActions,
     CircularProgress,
-    Container,
+    Container, IconButton,
     Typography
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import {selectUser} from "../../users/usersSlice.ts";
+import {deleteTrackById} from "../tracksThunk.ts";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 
 const Tracks = () => {
@@ -26,6 +28,7 @@ const Tracks = () => {
     const idArtist = tracks[0]?.album?.artist;
     const artistName = albums[0]?.artist?.name;
     const albumName = tracks[0]?.album?.title;
+    const navigate = useNavigate();
 
     useEffect(() => {
         if(params.idAlbum)
@@ -36,6 +39,11 @@ const Tracks = () => {
 
     const onPlay = async (trackHistory: {track: string, datetime: Date}) => {
         await dispatch(trackHistoryFetch(trackHistory));
+    }
+
+    const deleteTrack = async (id: string) => {
+        await dispatch(deleteTrackById(id))
+        navigate(`/artists`)
     }
 
     return (
@@ -75,6 +83,15 @@ const Tracks = () => {
                                         {(user && user.role === "admin") ?
                                             (track.isPublished === true ? <Typography>Is published</Typography> : <Typography>Not published</Typography>)
                                             : null}
+                                        {(user && (user.role === "admin" || (user._id === track.user && !track.isPublished))) ? (
+                                            <>
+                                                <CardActions>
+                                                    <IconButton onClick={() => deleteTrack(track._id)}>
+                                                        <DeleteIcon />
+                                                    </IconButton>
+                                                </CardActions>
+                                            </>
+                                        ) : null}
                                         {(user && user._id === track.user && !track.isPublished) ?
                                             (<Typography>Not published</Typography>)
                                             : null}
