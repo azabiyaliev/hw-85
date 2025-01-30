@@ -9,7 +9,6 @@ import AddFormMenu from "./AddFormMenu.tsx";
 const NavBar = () => {
 
     const user = useAppSelector(selectUser);
-    console.log(user);
 
     return (
         <>

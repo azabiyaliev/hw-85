@@ -60,7 +60,11 @@ const Tracks = () => {
                                         {!albumName ? "Not found Album" : albumName}
                                     </Typography>
                                 </Grid>
-                                {tracks.map((track) => (
+                                {tracks.map((track) => {
+                                    if(!track.isPublished && !(user && (user._id === track.user || user.role === "admin"))) {
+                                        return null;
+                                    }
+                                    return (
                                     <Grid key={track._id} size={4} sx={{ mb: 2}}>
                                         <Typography>
                                             {`${track.trackNumber}.  ${track.title}`}
@@ -68,9 +72,15 @@ const Tracks = () => {
                                         <Typography>
                                             Duration: {track.duration}
                                         </Typography>
+                                        {(user && user.role === "admin") ?
+                                            (track.isPublished === true ? <Typography>Is published</Typography> : <Typography>Not published</Typography>)
+                                            : null}
+                                        {(user && user._id === track.user && !track.isPublished) ?
+                                            (<Typography>Not published</Typography>)
+                                            : null}
                                         {user ? <Button onClick={() => onPlay({track: track._id, datetime: new Date()}) }>Play</Button> : null}
                                     </Grid>
-                                ))}
+                                    )})}
                             </>
                         )}
                     </>

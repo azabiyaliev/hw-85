@@ -14,11 +14,13 @@ import {
     Typography
 } from "@mui/material";
 import {apiUrl} from "../../../globalConstants.ts";
+import {selectUser} from "../../users/usersSlice.ts";
 
 
 const Albums = () => {
 
     const params = useParams<{idArtist: string}>();
+    const user = useAppSelector(selectUser);
 
     const dispatch = useAppDispatch();
     const albums = useAppSelector(albumsResponse);
@@ -32,7 +34,6 @@ const Albums = () => {
 
     return (
         <Container maxWidth="lg">
-
             <Grid container direction={"row"}>
                 {loading ? (
                     <CircularProgress />
@@ -49,7 +50,12 @@ const Albums = () => {
                                         {!artistName ? "Not found Artist" : artistName}
                                     </Typography>
                                 </Grid>
-                                {albums.map((album) => (
+                                {albums.map((album) => {
+
+                                    if(!album.isPublished && !(user && (user._id === album.user || user.role === "admin"))) {
+                                        return null;
+                                    }
+                                    return (
                                     <Grid key={album._id} size={6}>
                                         <CardActionArea to={`/tracks/${album._id}`} component={NavLink}>
                                             <Card sx={{ maxWidth: 345, mb: 2, mt: 10, boxShadow: 20 }}>
@@ -64,12 +70,17 @@ const Albums = () => {
                                                 <CardContent>
                                                     Released in year: {album.year}.
                                                 </CardContent>
-
+                                                {(user && user.role === "admin") ?
+                                                    (album.isPublished === true ? <CardContent>Is published</CardContent> : <CardContent>Not published</CardContent>)
+                                                    : null}
+                                                {(user && user._id === album.user && !album.isPublished) ?
+                                                    (<CardContent>Not published</CardContent>)
+                                                    : null}
                                             </Card>
 
                                         </CardActionArea>
                                     </Grid>
-                                ))}
+                                    )})}
                             </>
                         )}
                     </>

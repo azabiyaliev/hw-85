@@ -1,9 +1,10 @@
 export interface IArtistRes {
     _id: string;
-    user: {user: string};
+    user: string;
     name: string;
     photo: string | null;
     information: string;
+    isPublished: boolean;
 }
 
 export interface IArtist {
@@ -20,6 +21,7 @@ export interface IAlbumRes {
     title: string;
     year: number;
     image: string | null;
+    isPublished: boolean;
 }
 
 export interface IAlbum {
@@ -33,10 +35,11 @@ export interface IAlbum {
 export interface ITrackRes {
     _id: string;
     user: string;
-    album: string;
+    album: {artist: string, title: string};
     title: string;
     trackNumber: number;
     duration: number;
+    isPublished: boolean;
 }
 
 export interface ITrack {
