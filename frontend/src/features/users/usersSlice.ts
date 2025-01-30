@@ -1,6 +1,6 @@
-import {GlobalError, IUser, ValidationError} from '../../../types';
+import {GlobalError, IUser, ValidationError} from '../../types';
 import {createSlice} from '@reduxjs/toolkit';
-import {RootState} from "../../../app/store.ts";
+import {RootState} from "../../app/store.ts";
 import {login, register} from "../store/thunks/thunks.ts";
 
 

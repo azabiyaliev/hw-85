@@ -1,17 +1,11 @@
 import {Button, Menu, MenuItem} from "@mui/material";
-import {IUser} from "../../types";
 import * as React from "react";
 import {useState} from "react";
-import {useAppDispatch} from "../../app/hooks.ts";
-import {unsetUser} from "../../features/users/usersSlice.ts";
-import {logout} from "../../features/store/thunks/thunks.ts";
 
-interface Props {
-    user: IUser
-}
+import {NavLink} from "react-router-dom";
 
-const UserMenu: React.FC<Props> = ({user}) => {
-    const dispatch = useAppDispatch();
+
+const AddFormMenu = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -22,18 +16,13 @@ const UserMenu: React.FC<Props> = ({user}) => {
         setAnchorEl(null);
     }
 
-    const handleLogout = () => {
-        dispatch(logout());
-        dispatch(unsetUser());
-    }
-
     return (
         <>
             <Button
                 onClick={handleClick}
                 color={"inherit"}
             >
-                Hello, {user.username}!
+                Add
             </Button>
             <Menu
                 anchorEl={anchorEl}
@@ -41,13 +30,13 @@ const UserMenu: React.FC<Props> = ({user}) => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                <MenuItem>Profile</MenuItem>
-                <MenuItem>My account</MenuItem>
-                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                <MenuItem  to={"/add-artist"} component={NavLink}>Add Artist</MenuItem>
+                <MenuItem to={"/add-album"} component={NavLink}>Add Album</MenuItem>
+                <MenuItem to={"/add-track"} component={NavLink}>Add Track</MenuItem>
             </Menu>
         </>
 
     );
 };
 
-export default UserMenu;
+export default AddFormMenu;

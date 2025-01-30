@@ -1,7 +1,7 @@
-import {ITrackRes} from "../../../types";
+import {ITrackRes} from "../../types";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {fetchTracks} from "../store/thunks/thunks.ts";
-import {RootState} from "../../../app/store.ts";
+import {RootState} from "../../app/store.ts";
 
 interface tracksState {
     tracksRes: ITrackRes[];

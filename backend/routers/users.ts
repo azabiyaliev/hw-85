@@ -53,7 +53,7 @@ userRouter.post('/sessions', async (
         user.generateToken();
         await user.save();
 
-        res.send({message: "Username and password is correct", user:{username: user.username, token: user.token}});
+        res.send({message: "Username and password is correct", user:{username: user.username, role: user.role, token: user.token}});
     } catch (error) {
 
         if (error instanceof Error.ValidationError) {

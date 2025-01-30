@@ -1,6 +1,6 @@
-import {ITrackHistoryRes} from "../../../types";
+import {ITrackHistoryRes} from "../../types";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {RootState} from "../../../app/store.ts";
+import {RootState} from "../../app/store.ts";
 import {trackHistoryFetch, trackHistoryGet} from "../store/thunks/thunks.ts";
 
 interface trackHistoriesState {

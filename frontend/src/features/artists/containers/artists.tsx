@@ -1,7 +1,7 @@
 import {useAppDispatch, useAppSelector} from "../../../app/hooks.ts";
-import {artistsResponse, isLoading} from "./artistsSlice.ts";
+import {artistsResponse, isLoading} from "../artistsSlice.ts";
 import {useEffect} from "react";
-import {fetchArtists} from "../store/thunks/thunks.ts";
+import {fetchArtists} from "../../store/thunks/thunks.ts";
 import {Card, CardActionArea, CardHeader, CardMedia, CircularProgress, Container, Typography} from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import {apiUrl} from "../../../globalConstants.ts";
@@ -13,6 +13,7 @@ const Artists = () => {
     const dispatch = useAppDispatch();
     const artists = useAppSelector(artistsResponse);
     const loading = useAppSelector(isLoading);
+    console.log(artists);
 
     useEffect(() => {
         dispatch(fetchArtists());

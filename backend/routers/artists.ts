@@ -19,7 +19,7 @@ artistsRouter.get('/', async (
     }
 });
 
-artistsRouter.post('/', imagesUpload.single('photo'), auth, permit("admin", "user"), async (
+artistsRouter.post('/', imagesUpload.single('image'), auth, permit("admin", "user"), async (
     req,
     res,
     next) => {
@@ -29,7 +29,7 @@ artistsRouter.post('/', imagesUpload.single('photo'), auth, permit("admin", "use
     const artistData = {
         user: userFromAuth,
         name: req.body.name,
-        photo: req.file ? 'photo' + req.file.filename : null,
+        photo: req.file ? 'images' + req.file.filename : null,
         information: req.body.information,
         isPublished: false,
     }

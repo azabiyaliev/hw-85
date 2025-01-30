@@ -1,14 +1,21 @@
 import NavBar from "./components/NavBar/NavBar.tsx";
 import {Route, Routes} from "react-router-dom";
-import Artists from "./features/containers/artists/artists.tsx";
-import Albums from "./features/containers/albums/albums.tsx";
-import Tracks from "./features/containers/tracks/tracks.tsx";
-import RegisterPage from "./features/containers/users/RegisterPage.tsx";
-import LoginPage from "./features/containers/users/LoginPage.tsx";
-import TrackHistories from "./features/containers/trackHistories/trackHistories.tsx";
+import Artists from "./features/artists/containers/artists.tsx";
+import Albums from "./features/albums/containers/albums.tsx";
+import Tracks from "./features/tracks/tracks.tsx";
+import RegisterPage from "./features/users/RegisterPage.tsx";
+import LoginPage from "./features/users/LoginPage.tsx";
+import TrackHistories from "./features/trackHistories/trackHistories.tsx";
+import NewArtist from "./features/artists/containers/NewArtist.tsx";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.tsx";
+import {useAppSelector} from "./app/hooks.ts";
+import {selectUser} from "./features/users/usersSlice.ts";
+import NewAlbum from "./features/albums/containers/NewAlbum.tsx";
 
 
 const App = () => {
+
+    const user = useAppSelector(selectUser);
 
   return (
     <>
@@ -21,7 +28,16 @@ const App = () => {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/trackHistory" element={<TrackHistories />} />
-
+          <Route path="/add-artist" element={
+              <ProtectedRoute isAllowed={user && (user.role === "admin" || user.role === "user")}>
+                  <NewArtist/>
+              </ProtectedRoute>
+          }/>
+          <Route path="/add-album" element={
+              <ProtectedRoute isAllowed={user && (user.role === "admin" || user.role === "user")}>
+                  <NewAlbum/>
+              </ProtectedRoute>
+          }/>
       </Routes>
     </>
   )

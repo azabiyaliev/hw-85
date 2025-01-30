@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {IRegister} from "../../../types";
+import {IRegister} from "../../types";
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid2';
 import Box from '@mui/material/Box';
@@ -7,7 +7,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Avatar, Button } from '@mui/material';
-import {useAppDispatch, useAppSelector} from "../../../app/hooks.ts";
+import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
 import { selectRegisterError } from './usersSlice.ts';
 import {NavLink, useNavigate} from 'react-router-dom';
 import {register} from "../store/thunks/thunks.ts";

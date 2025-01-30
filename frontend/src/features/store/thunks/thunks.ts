@@ -7,10 +7,10 @@ import {
     IRegisterResponse,
     ValidationError,
     ILogin, IUser, GlobalError, ITrackHistory, ITrackHistoryRes
-} from "../../../../types";
-import axiosAPI from "../../../../axiosAPI.ts";
+} from "../../../types";
+import axiosAPI from "../../../axiosAPI.ts";
 import {isAxiosError} from "axios";
-import {RootState} from "../../../../app/store.ts";
+import {RootState} from "../../../app/store.ts";
 
 
 export const fetchArtists = createAsyncThunk<IArtistRes[], void>(
@@ -60,7 +60,6 @@ export const login = createAsyncThunk<IUser, ILogin, {rejectValue: GlobalError}>
         try {
             const response = await axiosAPI.post<IRegisterResponse>('/users/sessions', login);
             return response.data.user;
-
         } catch (error) {
             if (isAxiosError(error) && error.response && error.response.status === 400) {
                 return rejectWithValue(error.response.data as GlobalError);

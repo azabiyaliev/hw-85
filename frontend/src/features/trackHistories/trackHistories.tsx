@@ -1,4 +1,4 @@
-import {useAppDispatch, useAppSelector} from "../../../app/hooks.ts";
+import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
 import {isLoading, tracksHistoriesResponse} from "./trackHistoriesSlice.ts";
 import {useEffect} from "react";
 import {trackHistoryGet} from "../store/thunks/thunks.ts";

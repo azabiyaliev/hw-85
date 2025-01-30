@@ -1,16 +1,33 @@
 export interface IArtistRes {
     _id: string;
+    user: {user: string};
     name: string;
     photo: string | null;
     information: string;
 }
 
+export interface IArtist {
+    user: string;
+    name: string;
+    photo: File | null;
+    information: string;
+}
+
 export interface IAlbumRes {
     _id: string;
-    artist: IArtistRes;
+    user: string;
+    artist: string;
     title: string;
     year: number;
     image: string | null;
+}
+
+export interface IAlbum {
+    user: string;
+    artist: string;
+    title: string;
+    year: string;
+    image: File | null;
 }
 
 export interface ITrackRes {
@@ -35,10 +52,11 @@ export interface IUser {
     _id: string;
     username: string;
     token: string;
+    role: string;
 }
 
 export interface IRegisterResponse {
-    user: User;
+    user: IUser;
     message: string;
 }
 

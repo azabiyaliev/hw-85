@@ -1,5 +1,5 @@
 import {useParams} from "react-router-dom";
-import {useAppDispatch, useAppSelector} from "../../../app/hooks.ts";
+import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
 import {useEffect} from "react";
 import {fetchAlbums, fetchTracks, trackHistoryFetch} from "../store/thunks/thunks.ts";
 import {isLoading, tracksResponse} from "./tracksSlice.ts";

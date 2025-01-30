@@ -1,7 +1,7 @@
 import {useAppDispatch, useAppSelector} from "../../../app/hooks.ts";
 import {useEffect} from "react";
-import {fetchAlbums} from "../store/thunks/thunks.ts";
-import {albumsResponse, isLoading} from "./albumsSlice.ts";
+import {fetchAlbums} from "../../store/thunks/thunks.ts";
+import {albumsResponse, isLoading} from "../albumsSlice.ts";
 import {NavLink, useParams} from "react-router-dom";
 import Grid from "@mui/material/Grid2";
 import {
