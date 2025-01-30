@@ -17,7 +17,7 @@ import * as React from "react";
 import {IAlbum} from "../../../types";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks.ts";
 import {artistsResponse} from "../../artists/artistsSlice.ts";
-import {fetchArtists} from "../../store/thunks/thunks.ts";
+import {fetchArtists} from "../../artists/artistsThunk.ts";
 
 interface PropsAlbums {
     onSubmitAlbums: (album: IAlbum) => void;
@@ -57,7 +57,6 @@ const AlbumForm: React.FC<PropsAlbums> = ({onSubmitAlbums}) => {
 
     const fileEventChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, files } = e.target;
-
         if (files) {
             setForm((prevState) => ({
                 ...prevState,
@@ -115,7 +114,6 @@ const AlbumForm: React.FC<PropsAlbums> = ({onSubmitAlbums}) => {
                                 onChange={inputChangeHandler}
                             />
                         </Grid>
-
                         <Grid size={{ xs: 12 }}>
                             <TextField
                                 id="year"
@@ -127,7 +125,6 @@ const AlbumForm: React.FC<PropsAlbums> = ({onSubmitAlbums}) => {
                                 onChange={inputChangeHandler}
                             />
                         </Grid>
-
                         <Grid size={{ xs: 12 }} >
                             <FileInput
                                 name="image"
@@ -135,7 +132,6 @@ const AlbumForm: React.FC<PropsAlbums> = ({onSubmitAlbums}) => {
                                 onGetFile={fileEventChangeHandler}
                             />
                         </Grid>
-
                         <Grid>
                             <Button type="submit" color="primary">
                                 Add album

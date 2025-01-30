@@ -1,7 +1,9 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks.ts";
 import {useEffect} from "react";
-import {fetchAlbums, fetchTracks, trackHistoryFetch} from "../../store/thunks/thunks.ts";
+import {fetchAlbums} from "../../albums/albumsThunk.ts";
+import {fetchTracks} from "../tracksThunk.ts";
+import {trackHistoryFetch} from "../../trackHistories/trackHistoriesThunk.ts";
 import {isLoading, tracksResponse} from "../tracksSlice.ts";
 import {albumsResponse} from "../../albums/albumsSlice.ts";
 import {
@@ -88,25 +90,28 @@ const Tracks = () => {
                                         </Typography>
                                         {(user && user.role === "admin") ?
                                             (!track.isPublished ? (
-                                                <Box sx={{display: "flex", justifyContent: "space-between"}}>
+                                                <Box sx={{display: "flex", justifyContent: "space-between", ml: -2}}>
                                                     <CardContent>Not published</CardContent>
                                                     <Button onClick={() => publishedTrack(track._id)}>Published</Button>
                                                 </Box>
                                             ): null)
                                             : null}
-                                        {(user && (user.role === "admin" || (user._id === track.user && !track.isPublished))) ? (
-                                            <>
-                                                <CardActions>
-                                                    <IconButton onClick={() => deleteTrack(track._id)}>
-                                                        <DeleteIcon />
-                                                    </IconButton>
-                                                </CardActions>
-                                            </>
-                                        ) : null}
-                                        {(user && user._id === track.user && !track.isPublished) ?
-                                            (<Typography>Not published</Typography>)
-                                            : null}
-                                        {user ? <Button onClick={() => onPlay({track: track._id, datetime: new Date()}) }>Play</Button> : null}
+                                        <Box sx={{display: "flex", justifyContent: "space-between", ml: -2}}>
+                                            {(user && (user.role === "admin" || (user._id === track.user && !track.isPublished))) ? (
+                                                <>
+                                                    <CardActions>
+                                                        <IconButton onClick={() => deleteTrack(track._id)}>
+                                                            <DeleteIcon />
+                                                        </IconButton>
+                                                    </CardActions>
+                                                </>
+                                            ) : null}
+                                            {(user && user._id === track.user && !track.isPublished) ?
+                                                (<Typography>Not published</Typography>)
+                                                : null}
+                                            {user ? <Button onClick={() => onPlay({track: track._id, datetime: new Date()}) }>Play</Button> : null}
+                                        </Box>
+
                                     </Grid>
                                     )})}
                             </>

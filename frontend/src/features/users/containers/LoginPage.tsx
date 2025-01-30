@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {IRegister} from "../../types";
+import {IRegister} from "../../../types";
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid2';
 import Box from '@mui/material/Box';
@@ -7,11 +7,11 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {Alert, Avatar, Button} from '@mui/material';
-import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
+import {useAppDispatch, useAppSelector} from "../../../app/hooks.ts";
 import {NavLink, useNavigate} from 'react-router-dom';
-import {login} from "../store/thunks/thunks.ts";
+import {login} from "../usersThunk.ts";
 import * as React from "react";
-import {selectLoginError} from "./usersSlice.ts";
+import {selectLoginError} from "../usersSlice.ts";
 
 const LoginPage = () => {
     const dispatch = useAppDispatch();

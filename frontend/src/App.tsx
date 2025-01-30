@@ -1,11 +1,11 @@
 import NavBar from "./components/NavBar/NavBar.tsx";
 import {Route, Routes} from "react-router-dom";
-import Artists from "./features/artists/containers/artists.tsx";
-import Albums from "./features/albums/containers/albums.tsx";
-import Tracks from "./features/tracks/containers/tracks.tsx";
-import RegisterPage from "./features/users/RegisterPage.tsx";
-import LoginPage from "./features/users/LoginPage.tsx";
-import TrackHistories from "./features/trackHistories/trackHistories.tsx";
+import Artists from "./features/artists/containers/Artists.tsx";
+import Albums from "./features/albums/containers/Albums.tsx";
+import Tracks from "./features/tracks/containers/Tracks.tsx";
+import RegisterPage from "./features/users/containers/RegisterPage.tsx";
+import LoginPage from "./features/users/containers/LoginPage.tsx";
+import TrackHistories from "./features/trackHistories/containers/TrackHistories.tsx";
 import NewArtist from "./features/artists/containers/NewArtist.tsx";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.tsx";
 import {useAppSelector} from "./app/hooks.ts";

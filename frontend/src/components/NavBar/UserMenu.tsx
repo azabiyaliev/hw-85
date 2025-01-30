@@ -4,7 +4,7 @@ import * as React from "react";
 import {useState} from "react";
 import {useAppDispatch} from "../../app/hooks.ts";
 import {unsetUser} from "../../features/users/usersSlice.ts";
-import {logout} from "../../features/store/thunks/thunks.ts";
+import {logout} from "../../features/users/usersThunk.ts";
 
 interface Props {
     user: IUser

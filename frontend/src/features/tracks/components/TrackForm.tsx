@@ -16,7 +16,8 @@ import * as React from "react";
 import {ITrack} from "../../../types";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks.ts";
 import {artistsResponse} from "../../artists/artistsSlice.ts";
-import {fetchAlbums, fetchArtists} from "../../store/thunks/thunks.ts";
+import {fetchAlbums} from "../../albums/albumsThunk.ts";
+import {fetchArtists} from "../../artists/artistsThunk.ts";
 import {albumsResponse} from "../../albums/albumsSlice.ts";
 
 interface PropsTracks {

@@ -1,7 +1,7 @@
 import {IAlbum, IAlbumRes} from "../../types";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {RootState} from "../../app/store.ts";
-import {fetchAlbums} from "../store/thunks/thunks.ts";
+import {fetchAlbums} from "./albumsThunk.ts";
 import {deleteAlbumById, postAlbum, togglePublishedAlbum} from "./albumsThunk.ts";
 
 interface albumsState {

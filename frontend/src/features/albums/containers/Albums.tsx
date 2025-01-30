@@ -1,6 +1,6 @@
 import {useAppDispatch, useAppSelector} from "../../../app/hooks.ts";
 import {useEffect} from "react";
-import {fetchAlbums} from "../../store/thunks/thunks.ts";
+import {fetchAlbums} from "../albumsThunk.ts";
 import {albumsResponse, isLoading} from "../albumsSlice.ts";
 import {NavLink, useNavigate, useParams} from "react-router-dom";
 import Grid from "@mui/material/Grid2";
@@ -23,7 +23,6 @@ const Albums = () => {
 
     const params = useParams<{idArtist: string}>();
     const user = useAppSelector(selectUser);
-
     const dispatch = useAppDispatch();
     const albums = useAppSelector(albumsResponse);
     const loading = useAppSelector(isLoading);
@@ -37,7 +36,7 @@ const Albums = () => {
 
     const deleteAlbum = async (id: string) => {
         await dispatch(deleteAlbumById(id))
-        navigate(`/artists`)
+        navigate(`/`)
     }
 
     const publishedAlbum = async (id: string) => {
@@ -71,7 +70,7 @@ const Albums = () => {
                                     return (
                                     <Grid key={album._id} size={6}>
                                         <CardActionArea to={`/tracks/${album._id}`} component={NavLink}>
-                                            <Card sx={{ maxWidth: 345, mb: 2, mt: 10, boxShadow: 20 }}>
+                                            <Card sx={{ maxWidth: 345, mb: 2, mt: 5, boxShadow: 20 }}>
                                                 <CardHeader title={album.title}/>
                                                 <CardMedia
                                                     style={{width: "100%"}}
@@ -80,9 +79,20 @@ const Albums = () => {
                                                     image={apiUrl + "/" + album.image}
                                                     title={album.title}
                                                 />
-                                                <CardContent>
-                                                    Released in year: {album.year}.
-                                                </CardContent>
+                                                <Box sx={{display: "flex", justifyContent: "space-between"}}>
+                                                    <CardContent>
+                                                        Released in year: {album.year}.
+                                                    </CardContent>
+                                                    {(user && (user.role === "admin" || (user._id === album.user && !album.isPublished))) ? (
+                                                        <>
+                                                            <CardActions>
+                                                                <IconButton onClick={() => deleteAlbum(album._id)}>
+                                                                    <DeleteIcon />
+                                                                </IconButton>
+                                                            </CardActions>
+                                                        </>
+                                                    ) : null}
+                                                </Box>
                                                 {(user && user.role === "admin") ?
                                                     (!album.isPublished ? (
                                                         <Box sx={{display: "flex", justifyContent: "space-between"}}>
@@ -91,20 +101,10 @@ const Albums = () => {
                                                         </Box>
                                                     ): null)
                                                     : null}
-                                                {(user && (user.role === "admin" || (user._id === album.user && !album.isPublished))) ? (
-                                                    <>
-                                                        <CardActions>
-                                                            <IconButton onClick={() => deleteAlbum(album._id)}>
-                                                                <DeleteIcon />
-                                                            </IconButton>
-                                                        </CardActions>
-                                                    </>
-                                                ) : null}
                                                 {(user && user._id === album.user && !album.isPublished) ?
                                                     (<CardContent>Not published</CardContent>)
                                                     : null}
                                             </Card>
-
                                         </CardActionArea>
                                     </Grid>
                                     )})}

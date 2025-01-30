@@ -1,12 +1,12 @@
-import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
-import {isLoading, tracksHistoriesResponse} from "./trackHistoriesSlice.ts";
+import {useAppDispatch, useAppSelector} from "../../../app/hooks.ts";
+import {isLoading, tracksHistoriesResponse} from "../trackHistoriesSlice.ts";
 import {useEffect} from "react";
-import {trackHistoryGet} from "../store/thunks/thunks.ts";
+import {trackHistoryGet} from "../trackHistoriesThunk.ts";
 import {Card, CardContent, CircularProgress, Container, Typography} from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import dayjs from "dayjs";
 import {useNavigate} from "react-router-dom";
-import {selectUser} from "../users/usersSlice.ts";
+import {selectUser} from "../../users/usersSlice.ts";
 
 const TrackHistories = () => {
     const user = useAppSelector(selectUser);
@@ -14,7 +14,6 @@ const TrackHistories = () => {
     const trackHistories = useAppSelector(tracksHistoriesResponse)
     const loading = useAppSelector(isLoading)
     const navigate = useNavigate();
-    console.log(trackHistories)
 
     if(!user) {
         navigate("/login");

@@ -1,6 +1,6 @@
 import {IArtist, IArtistRes} from "../../types";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {fetchArtists} from "../store/thunks/thunks.ts";
+import {fetchArtists} from "./artistsThunk.ts";
 import {RootState} from "../../app/store.ts";
 import {deleteArtistById, postArtist, togglePublished} from "./artistsThunk.ts";
 

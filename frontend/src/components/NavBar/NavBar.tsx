@@ -19,8 +19,7 @@ const NavBar = () => {
                             MusicChannel
                         </Typography>
                         {user && (user.role === "admin" || user.role === "user") && (<AddFormMenu/>)}
-                        {user ? <Typography sx={{textDecoration: "none", color: "inherit"}} to={"/trackHistory"} component={NavLink}>Track History</Typography> : null}
-
+                        {user ? <Typography sx={{textDecoration: "none", color: "inherit", fontSize: 14}} to={"/trackHistory"} component={NavLink}>TRACK HISTORY</Typography> : null}
                         {user ? <UserMenu user={user}/> : <AnonymousMenu/>}
 
                     </Toolbar>

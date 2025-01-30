@@ -1,7 +1,7 @@
 import {useAppDispatch, useAppSelector} from "../../../app/hooks.ts";
 import {artistsResponse, isLoading} from "../artistsSlice.ts";
 import {useEffect} from "react";
-import {fetchArtists} from "../../store/thunks/thunks.ts";
+import {fetchArtists} from "../artistsThunk.ts";
 import {
     Box,
     Button,
@@ -28,8 +28,6 @@ const Artists = () => {
     const loading = useAppSelector(isLoading);
     const user = useAppSelector(selectUser);
     const navigate = useNavigate();
-    console.log(user);
-    console.log(artists);
 
     useEffect(() => {
         dispatch(fetchArtists());
@@ -63,8 +61,8 @@ const Artists = () => {
                                     if(!artist.isPublished && !(user && (user._id === artist.user || user.role === "admin"))) return null;
 
                                     return (
-                                        <Grid key={artist._id} size={6}>
-                                            <Card sx={{ maxWidth: 345, mb: 2, mt: 10, boxShadow: 20 }}>
+                                        <Grid key={artist._id} size={4}>
+                                            <Card sx={{ maxWidth: 345, mb: 2, mt: 5, boxShadow: 20 }}>
                                                 <CardActionArea to={`/albums/${artist._id}`} component={NavLink}>
                                                     <CardHeader title={artist.name}/>
                                                     <CardMedia
@@ -82,6 +80,9 @@ const Artists = () => {
                                                         </Box>
                                                     ): null)
                                                     : null}
+                                                    {(user && user._id === artist.user && !artist.isPublished) ?
+                                                        (<CardContent>Not published</CardContent>)
+                                                        : null}
                                                     {(user && (user.role === "admin" || (user._id === artist.user && !artist.isPublished))) ? (
                                                         <>
                                                             <CardActions>
@@ -91,9 +92,6 @@ const Artists = () => {
                                                             </CardActions>
                                                         </>
                                                     ) : null}
-                                                    {(user && user._id === artist.user && !artist.isPublished) ?
-                                                    (<CardContent>Not published</CardContent>)
-                                                    : null}
                                                 </CardActionArea>
                                             </Card>
                                         </Grid>

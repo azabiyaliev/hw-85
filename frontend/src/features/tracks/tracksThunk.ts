@@ -1,7 +1,14 @@
-import {ITrack} from "../../types";
+import {ITrack, ITrackRes} from "../../types";
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {RootState} from "../../app/store.ts";
 import axiosAPI from "../../axiosAPI.ts";
+
+export const fetchTracks = createAsyncThunk<ITrackRes[], string>(
+    "tracks/fetchTracks",
+    async (album)=> {
+        const response = await axiosAPI.get<ITrackRes[]>(`/tracks?album=${album}`);
+        return response.data || [];
+    });
 
 export const postTrack = createAsyncThunk<void, ITrack, { state: RootState }>(
     "tracks/postTrack",

@@ -1,8 +1,7 @@
 import {ITrackRes} from "../../types";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {fetchTracks} from "../store/thunks/thunks.ts";
 import {RootState} from "../../app/store.ts";
-import {deleteTrackById, postTrack, togglePublishedTrack} from "./tracksThunk.ts";
+import {fetchTracks, deleteTrackById, postTrack, togglePublishedTrack} from "./tracksThunk.ts";
 
 interface tracksState {
     tracksRes: ITrackRes[];

@@ -1,7 +1,14 @@
-import {IArtist} from "../../types";
+import {IArtist, IArtistRes} from "../../types";
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {RootState} from "../../app/store.ts";
 import axiosAPI from "../../axiosAPI.ts";
+
+export const fetchArtists = createAsyncThunk<IArtistRes[], void>(
+    "artists/fetchArtists",
+    async ()=> {
+        const response = await axiosAPI.get<IArtistRes[]>("/artists");
+        return response.data || [];
+    });
 
 export const postArtist = createAsyncThunk<void, IArtist, { state: RootState }>(
     "artists/postArtist",
