@@ -1,9 +1,9 @@
 import {useParams} from "react-router-dom";
-import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
+import {useAppDispatch, useAppSelector} from "../../../app/hooks.ts";
 import {useEffect} from "react";
-import {fetchAlbums, fetchTracks, trackHistoryFetch} from "../store/thunks/thunks.ts";
-import {isLoading, tracksResponse} from "./tracksSlice.ts";
-import {albumsResponse} from "../albums/albumsSlice.ts";
+import {fetchAlbums, fetchTracks, trackHistoryFetch} from "../../store/thunks/thunks.ts";
+import {isLoading, tracksResponse} from "../tracksSlice.ts";
+import {albumsResponse} from "../../albums/albumsSlice.ts";
 import {
     Button,
     CircularProgress,
@@ -11,7 +11,7 @@ import {
     Typography
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import {selectUser} from "../users/usersSlice.ts";
+import {selectUser} from "../../users/usersSlice.ts";
 
 
 const Tracks = () => {

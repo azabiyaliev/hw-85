@@ -2,7 +2,7 @@ import NavBar from "./components/NavBar/NavBar.tsx";
 import {Route, Routes} from "react-router-dom";
 import Artists from "./features/artists/containers/artists.tsx";
 import Albums from "./features/albums/containers/albums.tsx";
-import Tracks from "./features/tracks/tracks.tsx";
+import Tracks from "./features/tracks/containers/tracks.tsx";
 import RegisterPage from "./features/users/RegisterPage.tsx";
 import LoginPage from "./features/users/LoginPage.tsx";
 import TrackHistories from "./features/trackHistories/trackHistories.tsx";
@@ -11,6 +11,7 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.tsx";
 import {useAppSelector} from "./app/hooks.ts";
 import {selectUser} from "./features/users/usersSlice.ts";
 import NewAlbum from "./features/albums/containers/NewAlbum.tsx";
+import NewTrack from "./features/tracks/containers/NewTrack.tsx";
 
 
 const App = () => {
@@ -36,6 +37,11 @@ const App = () => {
           <Route path="/add-album" element={
               <ProtectedRoute isAllowed={user && (user.role === "admin" || user.role === "user")}>
                   <NewAlbum/>
+              </ProtectedRoute>
+          }/>
+          <Route path="/add-track" element={
+              <ProtectedRoute isAllowed={user && (user.role === "admin" || user.role === "user")}>
+                  <NewTrack/>
               </ProtectedRoute>
           }/>
       </Routes>

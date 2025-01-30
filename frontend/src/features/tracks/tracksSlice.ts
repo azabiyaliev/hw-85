@@ -2,20 +2,24 @@ import {ITrackRes} from "../../types";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {fetchTracks} from "../store/thunks/thunks.ts";
 import {RootState} from "../../app/store.ts";
+import {postTrack} from "./tracksThunk.ts";
 
 interface tracksState {
     tracksRes: ITrackRes[];
     isLoading: boolean;
+    isLoadingPost: boolean;
 }
 
 const initialState: tracksState = {
     tracksRes: [],
     isLoading: false,
+    isLoadingPost: false,
 }
 
 
 export const tracksResponse = (state: RootState) => state.tracks.tracksRes;
 export const isLoading = (state: RootState) => state.tracks.isLoading;
+export const selectLoadingTrackPost = (state: RootState) => state.tracks.isLoadingPost;
 
 
 export const tracksSlice = createSlice({
@@ -33,6 +37,15 @@ export const tracksSlice = createSlice({
             })
             .addCase(fetchTracks.rejected, (state) => {
                 state.isLoading = false
+            })
+            .addCase(postTrack.pending, (state) => {
+                state.isLoadingPost = true
+            })
+            .addCase(postTrack.fulfilled, (state) => {
+                state.isLoadingPost = false
+            })
+            .addCase(postTrack.rejected, (state) => {
+                state.isLoadingPost = false
             })
 
     }

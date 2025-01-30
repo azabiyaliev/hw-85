@@ -16,7 +16,7 @@ export interface IArtist {
 export interface IAlbumRes {
     _id: string;
     user: string;
-    artist: string;
+    artist: {name: string};
     title: string;
     year: number;
     image: string | null;
@@ -32,7 +32,16 @@ export interface IAlbum {
 
 export interface ITrackRes {
     _id: string;
-    album: IAlbumRes;
+    user: string;
+    album: string;
+    title: string;
+    trackNumber: number;
+    duration: number;
+}
+
+export interface ITrack {
+    user: string;
+    album: {_id: string, artist: string};
     title: string;
     trackNumber: number;
     duration: number;

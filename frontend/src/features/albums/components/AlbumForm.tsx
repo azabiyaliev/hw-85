@@ -83,7 +83,7 @@ const AlbumForm: React.FC<PropsAlbums> = ({onSubmitAlbums}) => {
                         <Typography component="h4" variant="h5" sx={{mt:5, textAlign: "center" }}>Add new album</Typography>
                             <Grid size={{ xs: 12 }}>
                                 <FormControl fullWidth>
-                                    <InputLabel id="category">Artists</InputLabel>
+                                    <InputLabel id="artist">Artists</InputLabel>
                                     <Select
                                         labelId="artist"
                                         id="artist"
