@@ -53,11 +53,15 @@ export interface ITrack {
 export interface IRegister {
     username: string;
     password: string;
+    displayName: string;
+    avatar: File | null;
 }
 
 export interface ILogin {
     username: string;
     password: string;
+    displayName: string;
+    avatar: File | null;
 }
 
 export interface IUser {
@@ -65,6 +69,9 @@ export interface IUser {
     username: string;
     token: string;
     role: string;
+    displayName: string;
+    googleId: string;
+    avatar: string;
 }
 
 export interface IRegisterResponse {

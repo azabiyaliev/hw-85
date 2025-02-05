@@ -1,10 +1,11 @@
-import {Button, Menu, MenuItem} from "@mui/material";
+import {Avatar, Button, Menu, MenuItem} from "@mui/material";
 import {IUser} from "../../types";
 import * as React from "react";
 import {useState} from "react";
 import {useAppDispatch} from "../../app/hooks.ts";
 import {unsetUser} from "../../features/users/usersSlice.ts";
 import {logout} from "../../features/users/usersThunk.ts";
+import {apiUrl} from "../../globalConstants.ts";
 
 interface Props {
     user: IUser
@@ -33,7 +34,9 @@ const UserMenu: React.FC<Props> = ({user}) => {
                 onClick={handleClick}
                 color={"inherit"}
             >
-                Hello, {user.username}!
+                Hello, {user.displayName}!
+                <Avatar alt={user.displayName} src={user.avatar && user.avatar.startsWith("images/") ? apiUrl + "/" + user.avatar : user.avatar} sx={{ml: 2}} />
+
             </Button>
             <Menu
                 anchorEl={anchorEl}
@@ -41,8 +44,6 @@ const UserMenu: React.FC<Props> = ({user}) => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                <MenuItem>Profile</MenuItem>
-                <MenuItem>My account</MenuItem>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
         </>

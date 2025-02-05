@@ -4,10 +4,11 @@ import User from "../models/User";
 import auth, {RequestWithUser} from "../middleware/auth";
 import {OAuth2Client} from "google-auth-library";
 import config from "../config";
+import {imagesUpload} from "../multer";
 
 const userRouter = express.Router();
 
-const client = new OAuth2Client(config.google.clientID);
+const client = new OAuth2Client(config.google.clientId);
 
 
 userRouter.post("/google", async (
@@ -17,8 +18,8 @@ userRouter.post("/google", async (
     try {
 
         const ticket = await client.verifyIdToken({
-            idToken: req.body.credentials,
-            audience: config.google.clientID,
+            idToken: req.body.credential,
+            audience: config.google.clientId,
         })
 
         const payload = ticket.getPayload();
@@ -31,20 +32,22 @@ userRouter.post("/google", async (
         const email = payload.email;
         const id = payload.sub;
         const displayName = payload.name;
+        const avatar = payload.picture;
 
         if (!email) {
             res.status(400).send({error: "No enough user data to continue!."});
             return;
         }
 
-        let user = await User.findOne({googleID: id});
+        let user = await User.findOne({googleId: id});
 
         if (!user) {
             user = new User({
                 username: email,
                 password: crypto.randomUUID(),
-                googleID: id,
+                googleId: id,
                 displayName,
+                avatar,
             })
         }
 
@@ -63,7 +66,7 @@ userRouter.post("/google", async (
     }
 })
 
-userRouter.post('/register', async (
+userRouter.post('/register', imagesUpload.single('image'), async (
     req,
     res,
     next) => {
@@ -72,6 +75,8 @@ userRouter.post('/register', async (
         const user = new User({
             username: req.body.username,
             password: req.body.password,
+            displayName: req.body.displayName,
+            avatar: req.file ? 'images' + req.file.filename : null,
         });
         if(currentUser) {
             if(currentUser.username === user.username) {
@@ -111,7 +116,7 @@ userRouter.post('/sessions', async (
         user.generateToken();
         await user.save();
 
-        res.send({message: "Username and password is correct", user:{username: user.username, role: user.role, token: user.token, _id: user._id}});
+        res.send({message: "Username and password is correct", user});
     } catch (error) {
 
         if (error instanceof Error.ValidationError) {

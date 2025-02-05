@@ -22,16 +22,18 @@ const run = async () => {
 
     const [Martin, Lazlo] = await User.create(
         {
-            username: "Martin",
+            username: "MartinIden",
             password: "123",
             role: "admin",
             token: crypto.randomUUID(),
+            displayName: "Martin"
         },
         {
-            username: "Lazlo",
+            username: "LazloGugolack",
             password: "123",
             role: "user",
             token: crypto.randomUUID(),
+            displayName: "Lazlo"
         }
     );
 

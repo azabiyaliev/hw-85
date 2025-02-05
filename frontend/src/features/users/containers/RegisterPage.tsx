@@ -12,6 +12,7 @@ import { selectRegisterError } from '../usersSlice.ts';
 import {NavLink, useNavigate} from 'react-router-dom';
 import {register} from "../usersThunk.ts";
 import * as React from "react";
+import FileInput from "../../../components/FileInput/FileInput.tsx";
 
 const RegisterPage = () => {
   const dispatch = useAppDispatch();
@@ -20,6 +21,8 @@ const RegisterPage = () => {
   const [form, setForm] = useState<IRegister>({
     username: "",
     password: "",
+    displayName: "",
+    avatar: null,
   });
 
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,6 +49,17 @@ const RegisterPage = () => {
     }
   };
 
+  const fileEventChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = e.target;
+
+    if (files) {
+      setForm((prevState) => ({
+        ...prevState,
+        [name]: files[0] || null,
+      }));
+    }
+  };
+
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -67,6 +81,7 @@ const RegisterPage = () => {
             <Grid size={12}>
               <TextField
                 fullWidth
+                required
                 id="username"
                 label="Username"
                 name="username"
@@ -89,6 +104,27 @@ const RegisterPage = () => {
                 onChange={inputChangeHandler}
                 error={Boolean(getFieldError('password'))}
                 helperText={getFieldError('password')}
+              />
+            </Grid>
+            <Grid size={12}>
+              <TextField
+                  required
+                  fullWidth
+                  name="displayName"
+                  label="Display name"
+                  type="displayName"
+                  id="displayName"
+                  value={form.displayName}
+                  onChange={inputChangeHandler}
+                  error={Boolean(getFieldError('password'))}
+                  helperText={getFieldError('password')}
+              />
+            </Grid>
+            <Grid size={{ xs: 12 }} >
+              <FileInput
+                  name="image"
+                  label="Avatar"
+                  onGetFile={fileEventChangeHandler}
               />
             </Grid>
           </Grid>

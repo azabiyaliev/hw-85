@@ -4,6 +4,26 @@ import axiosAPI from "../../axiosAPI.ts";
 import {isAxiosError} from "axios";
 import {RootState} from "../../app/store.ts";
 
+export const googleLogin = createAsyncThunk<
+    IUser,
+    string,
+    {rejectValue: GlobalError}
+>(
+    'users/googleLogin',
+    async (credential, {rejectWithValue}) => {
+        try {
+            const response = await axiosAPI.post<IRegisterResponse>("users/google", {credential});
+            return response.data.user;
+        } catch (error) {
+            if (isAxiosError(error) && error.response && error.response.status === 400) {
+                return rejectWithValue(error.response.data as GlobalError);
+            }
+
+            throw error;
+        }
+    }
+)
+
 export const register = createAsyncThunk<
     IRegisterResponse,
     IRegister,
@@ -12,7 +32,19 @@ export const register = createAsyncThunk<
     'users/register',
     async (register: IRegister, {rejectWithValue}) => {
         try {
-            const response = await axiosAPI.post<IRegisterResponse>('/users/register', register);
+            const formData = new FormData();
+
+            const keys = Object.keys(register) as (keyof IRegister)[];
+
+            keys.forEach((key) => {
+                const value = register[key];
+
+                if (value !== null) {
+                    formData.append(key, value);
+                }
+            });
+
+            const response = await axiosAPI.post<IRegisterResponse>('/users/register', formData);
             return response.data;
         } catch (error) {
             if (isAxiosError(error) && error.response && error.response.status === 400) {
@@ -24,7 +56,11 @@ export const register = createAsyncThunk<
     }
 )
 
-export const login = createAsyncThunk<IUser, ILogin, {rejectValue: GlobalError}>(
+export const login = createAsyncThunk<
+    IUser,
+    ILogin,
+    {rejectValue: GlobalError}
+>(
     'users/login',
     async (login, {rejectWithValue}) => {
         try {

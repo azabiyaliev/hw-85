@@ -8,6 +8,8 @@ import {PersistGate} from "redux-persist/integration/react";
 import {addInterceptors} from "./axiosAPI.ts";
 import "react-toastify/dist/ReactToastify.css";
 import {ToastContainer} from "react-toastify";
+import {GoogleOAuthProvider} from "@react-oauth/google";
+import {GOOGLE_CLIENT_ID} from "./globalConstants.ts";
 
 addInterceptors(store);
 
@@ -18,15 +20,17 @@ const theme = createTheme({
 });
 
 createRoot(document.getElementById('root')!).render(
-    <ThemeProvider theme={theme}>
-        <Provider store={store}>
-            <PersistGate persistor={persistor}>
-                <BrowserRouter>
-                    <CssBaseline/>
-                    <ToastContainer/>
-                    <App />
-                </BrowserRouter>
-            </PersistGate>
-        </Provider>
-    </ThemeProvider>,
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+        <ThemeProvider theme={theme}>
+            <Provider store={store}>
+                <PersistGate persistor={persistor}>
+                    <BrowserRouter>
+                        <CssBaseline/>
+                        <ToastContainer/>
+                        <App />
+                    </BrowserRouter>
+                </PersistGate>
+            </Provider>
+        </ThemeProvider>
+    </GoogleOAuthProvider>,
 )
